@@ -46,7 +46,7 @@ static const period_ms_t CONFIG_SETTLE_PERIOD_MS = 3000;
 
 static void timer_config_save_cb(void *data);
 static void btif_config_write(UINT16 event, char *p_param);
-static void btif_config_devcache_cleanup(void);
+static void btif_config_remove_unpaired(config_t *config);
 
 // TODO(zachoverflow): Move these two functions out, because they are too specific for this file
 // {grumpy-cat/no, monty-python/you-make-me-sad}
@@ -361,7 +361,8 @@ void btif_config_flush(void) {
 
   alarm_cancel(alarm_timer);
 
-  btif_config_write();
+  btif_config_write(0, NULL);
+
 }
 
 int btif_config_clear(void){
